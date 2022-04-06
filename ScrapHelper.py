@@ -1,3 +1,4 @@
+modules = ['BeautifulSoup','urllib','subprocess','webbrowser','requests','platform','zipfile','time','json','re','os']
 from selenium.webdriver.support import expected_conditions as EC                                    # Módulo utilizado em conjunto com o WebDriverWait para aplicar condições nele
 from urllib.request import urlopen, Request, urlretrieve                                            # Módulo utilizado para entrar nas páginas https da web usando um navegador headless para isso
 from selenium.webdriver.support.ui import WebDriverWait                                             # Módulo utilizado para aplicar pausas no chrome driver
@@ -36,11 +37,9 @@ class Scrapy:
     
     # Função criada para fechar um webdriver verdadeiramente
     def close_driver(driver: webdriver, process: str = "chromedriver.exe", delay: int = 0) -> None:
-        os_name = platform.system()
         time.sleep(delay)                                                                           # Delay para fechar o chromedriver
         driver.close()                                                                              # Fecha o driver
-        if(os_name  == "Windows"):
-            subprocess.check_output(f"taskkill /F /IM {process}", shell=True)                       # Finaliza o processo especificado
+        subprocess.check_output(f"taskkill /F /IM {process}", shell=True)                           # Finaliza o processo especificado
         return None                                                                                 # Retorno da função
 
 
@@ -50,6 +49,14 @@ class Scrapy:
         driver.execute_script("arguments[0].click();", target_element)                              # Comando para clicar no elemento (Evita erros de sobreposição de tags)
         Scrapy.delay(interval)                                                                      # Intervalo de tempo
         return target_element                                                                       # Retorna o elemento
+
+
+    # Função criada para clicar em elementos html dentro de uma página aberta em um webdriver por meio do xpath
+    def selenium_click_class(driver: webdriver, tag: str, selector: str, interval: int = 0) -> None:
+        target_element = driver.find_element(By.CLASS_NAME,f'{tag}.{selector}')                     # Busca pelo elemento com as especificações
+        target_element.click()                                                                      # Comando para clicar no elemento (Evita erros de sobreposição de tags)
+        Scrapy.delay(interval)                                                                      # Intervalo de tempo
+        return target_element   
 
 
     # Função criada para coletar o código html de uma página em um webdriver
@@ -68,7 +75,7 @@ class Scrapy:
 
 
     # Função para colectar o código html da página em forma de objeto BeautifulSoup (Função geral)
-    def collect_html(url: str = targetUrl, headers: dict = headers, isFile: bool = False) -> BeautifulSoup:
+    def collect_html(url: str = targetUrl, headers: dict = headers, isFile: bool = True) -> BeautifulSoup:
         if (".html" in url and isFile):                                                             # Condicional para verificar se a url termina com .html (é um arquivo)
             response = open(url,errors="ignore").read()                                             # Abre o arquivo .html
         else:                                                                                       # Condicional contrária
@@ -180,6 +187,7 @@ class Scrapy:
         with open(path + f"\\{name}","w") as f:                                                     # Cria um arquivo 
             f.write(driver.page_source)                                                             # Escreve o page_source da página no documento
         return path + f"\\{name}"                                                                   # Retorna o path do arquivo
+
 
     # Função criada para realizar o download automático do chromedriver
     def download_chromedriver(destiny: str, disk: str = "C:\\") -> str:
