@@ -55,7 +55,7 @@ class Scrapy:
 
     # Função criada para clicar em elementos html dentro de uma página aberta em um webdriver por meio do xpath
     def selenium_click_class(driver: webdriver, tag: str, selector: str, interval: int = 0) -> None:
-        target_element = driver.find_element(By.CLASS_NAME,f'{tag}.{selector}')                     # Busca pelo elemento com as especificações
+        target_element = driver.find_element(By.CLASS_NAME,selector)                                # Busca pelo elemento com as especificações
         target_element.click()                                                                      # Comando para clicar no elemento (Evita erros de sobreposição de tags)
         Scrapy.delay(interval)                                                                      # Intervalo de tempo
         return target_element   
