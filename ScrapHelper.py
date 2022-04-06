@@ -66,7 +66,7 @@ class Scrapy:
 
 
     # Função para colectar o código html da página em forma de objeto BeautifulSoup (Função geral)
-    def collect_html(url: str = targetUrl, headers: dict = headers, isFile: bool = True) -> BeautifulSoup:
+    def collect_html(url: str = targetUrl, headers: dict = headers, isFile: bool = False) -> BeautifulSoup:
         if (".html" in url and isFile):                                                             # Condicional para verificar se a url termina com .html (é um arquivo)
             response = open(url,errors="ignore").read()                                             # Abre o arquivo .html
         else:                                                                                       # Condicional contrária
