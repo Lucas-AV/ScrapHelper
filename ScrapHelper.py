@@ -39,7 +39,9 @@ class Scrapy:
     def close_driver(driver: webdriver, process: str = "chromedriver.exe", delay: int = 0) -> None:
         time.sleep(delay)                                                                           # Delay para fechar o chromedriver
         driver.close()                                                                              # Fecha o driver
-        subprocess.check_output(f"taskkill /F /IM {process}", shell=True)                           # Finaliza o processo especificado
+        os_name = platform.system()
+        if(os_name == "Windows"):
+            subprocess.check_output(f"taskkill /F /IM {process}", shell=True)                           # Finaliza o processo especificado
         return None                                                                                 # Retorno da função
 
 
