@@ -36,6 +36,7 @@ class Scrapy:
     
     # Função criada para fechar um webdriver verdadeiramente
     def close_driver(driver: webdriver, process: str = "chromedriver.exe", delay: int = 0) -> None:
+        os_name = platform.system()
         time.sleep(delay)                                                                           # Delay para fechar o chromedriver
         driver.close()                                                                              # Fecha o driver
         if(os_name  == "Windows"):
